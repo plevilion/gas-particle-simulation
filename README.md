@@ -2,6 +2,8 @@
 
 A C++17 simulation of a monatomic gas (helium, neon and argon atoms in a 3D box) with a real-time Qt/OpenGL view and a text mode. Paul Vidal and I wrote it for the Object-Oriented Programming course (CS-112) at EPFL in spring 2024.
 
+![999 atoms of helium (blue), neon (red) and argon (green) moving in the box](docs/demo.gif)
+
 ## What it simulates
 
 The 3D version shows 999 atoms, 333 of each gas, in a 100 × 100 × 100 box, plus one helium *tracer* atom. The tracer leaves a trail behind it, which shows its Brownian motion as the other atoms knock it around.
