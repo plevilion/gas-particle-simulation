@@ -5,6 +5,7 @@
 #include "Enceinte.h"
 #include "Systeme.h"
 
+// Draws the simulation as text on a stream (for example the terminal).
 class TextViewer : public SupportADessin {
 public:
     TextViewer(std::ostream& flot) : flot(flot) {}
@@ -14,12 +15,12 @@ public:
     TextViewer(TextViewer&&) = default;
     TextViewer& operator=(TextViewer&&) = default;
 
-    virtual void dessine(Neon const& a_dessiner) override;
-    virtual void dessine(Helium const& a_dessiner) override;
-    virtual void dessine(Argon const& a_dessiner) override;
-    virtual void dessine(Enceinte const& a_dessiner) override;
-    virtual void dessine(Systeme const& a_dessiner) override;
-    virtual void dessine(Traine const& a_dessiner) override;
+    void dessine(Neon const& a_dessiner) override;
+    void dessine(Helium const& a_dessiner) override;
+    void dessine(Argon const& a_dessiner) override;
+    void dessine(Enceinte const& a_dessiner) override;
+    void dessine(Systeme const& a_dessiner) override;
+    void dessine(Traine const& a_dessiner) override;
 
 private:
     std::ostream& flot;

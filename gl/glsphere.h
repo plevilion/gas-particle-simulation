@@ -3,8 +3,7 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
 
-// Cette classe est celle des tutoriels graphiques et permet de dessiner les particules comme des
-// sphères
+// Sphere mesh used to draw the atoms. Provided by the course's graphics tutorials.
 
 class GLSphere {
 public:

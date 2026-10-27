@@ -1,13 +1,15 @@
 #pragma once
 
-#include <QOpenGLShaderProgram> // Classe qui regroupe les fonctions OpenGL liées aux shaders
+#include <QOpenGLShaderProgram>
 #include <QMatrix4x4>
 #include "SupportADessin.h"
 #include "glsphere.h"
 
+// Draws the simulation in 3D with OpenGL (spheres for atoms, lines for the box
+// and the tracer's trail).
 class VueOpenGL : public SupportADessin {
 public:
-    // méthode(s) de dessin (héritée(s) de SupportADessin)
+    // Drawing methods (from SupportADessin)
     void dessine(Neon const& a_dessiner) override;
     void dessine(Argon const& a_dessiner) override;
     void dessine(Helium const& a_dessiner) override;
@@ -15,20 +17,19 @@ public:
     void dessine(Systeme const& a_dessiner) override;
     void dessine(Traine const& a_dessiner) override;
 
-    // méthodes de (ré-)initialisation
+    // (Re)initialisation
     void init();
     void initializePosition();
 
-    // méthode set
     void setProjection(QMatrix4x4 const& projection) {
         prog.setUniformValue("projection", projection);
     }
 
-    // Méthodes set
+    // Camera movements
     void translate(double x, double y, double z);
     void rotate(double angle, double dir_x, double dir_y, double dir_z);
 
-    // méthode utilitaire offerte pour simplifier
+    // Drawing helpers
     void dessineCube(QMatrix4x4 const& point_de_vue = QMatrix4x4(), double col1 = 1,
                      double col2 = 0, double col3 = 0);
     void dessineSphere(QMatrix4x4 const& point_de_vue, double rouge = 1.0, double vert = 1.0,
@@ -37,10 +38,10 @@ public:
     void dessineTraine(QMatrix4x4 const& point_de_vue, Traine const& traine);
 
 private:
-    // Un shader OpenGL encapsulé dans une classe Qt
+    // OpenGL shader program
     QOpenGLShaderProgram prog;
     GLSphere sphere;
 
-    // Caméra
+    // Camera
     QMatrix4x4 matrice_vue;
 };

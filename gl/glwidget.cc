@@ -5,8 +5,7 @@
 #include "Particule.h"
 #include "Systeme.h"
 
-// Ce constructeur permet d'initaliser d'un système avec 3 particules dont les positions et vitesse
-// sont connues ( exo P11 )
+// Three given particles (plus a tracer) in a 20 x 20 x 20 box (exercise P11)
 GLWidget::GLWidget(Neon* neon, Argon* arg, Helium* hel, Traine* traine, QWidget* parent)
     : QOpenGLWidget(parent), c(20, 20, 20) {
     chronometre.restart();
@@ -17,8 +16,7 @@ GLWidget::GLWidget(Neon* neon, Argon* arg, Helium* hel, Traine* traine, QWidget*
     c.initialiser();
 }
 
-// Ce constructeur permet d'initialiser aléatoirement le systeme avec un nombre de particule donnée
-// ( int n )
+// n atoms of each gas plus a tracer, at random positions and velocities
 GLWidget::GLWidget(int n, int largeur, int hauteur, int profondeur, QWidget* parent)
     : QOpenGLWidget(parent), c(largeur, hauteur, profondeur) {
     chronometre.restart();
@@ -40,21 +38,11 @@ void GLWidget::initializeGL() {
 
 // ======================================================================
 void GLWidget::resizeGL(int width, int height) {
-    /* On commance par dire sur quelle partie de la
-     * fenêtre OpenGL doit dessiner.
-     * Ici on lui demande de dessiner sur toute la fenêtre.
-     */
+    // Draw on the whole window
     glViewport(0, 0, width, height);
 
-    /* Puis on modifie la matrice de projection du shader.
-     * Pour ce faire on crée une matrice identité (constructeur
-     * par défaut), on la multiplie par la droite par une matrice
-     * de perspective.
-     * Plus de détail sur cette matrice
-     *     http://www.songho.ca/opengl/gl_projectionmatrix.html
-     * Puis on upload la matrice sur le shader à l'aide de la
-     * méthode de la classe VueOpenGL
-     */
+    // Perspective projection, sent to the shader by VueOpenGL
+    // (see http://www.songho.ca/opengl/gl_projectionmatrix.html)
     QMatrix4x4 matrice;
     matrice.perspective(70.0, qreal(width) / qreal(height ? height : 1.0), 1e-3, 1e5);
     vue.setProjection(matrice);
@@ -68,7 +56,7 @@ void GLWidget::paintGL() {
 
 // ======================================================================
 void GLWidget::keyPressEvent(QKeyEvent* event) {
-    constexpr double petit_angle(5.0); // en degrés
+    constexpr double petit_angle(5.0); // degrees
     constexpr double petit_pas(1.0);
 
     switch (event->key()) {
@@ -132,18 +120,22 @@ void GLWidget::keyPressEvent(QKeyEvent* event) {
         break;
     };
 
-    update(); // redessine
+    update(); // redraw
 }
 
 // ======================================================================
 void GLWidget::timerEvent(QTimerEvent* event) {
     Q_UNUSED(event);
 
-    const double dt = chronometre.elapsed() / 1000.0;
+    // Real time since the last step, in seconds. Capped so that a long pause
+    // (window dragged, computer asleep) does not make particles jump too far.
+    double dt = chronometre.elapsed() / 1000.0;
+    if (dt > 0.1) {
+        dt = 0.1;
+    }
     chronometre.restart();
 
-    // on peut ici choisir quelle méthode de collisions on veut pour la simulation (evolue1 ou
-    // evolue2)
+    // evolue2 uses the grid of cells for collisions; evolue1 tests all pairs
     c.evolue2(dt);
     update();
 }
@@ -151,11 +143,11 @@ void GLWidget::timerEvent(QTimerEvent* event) {
 // ======================================================================
 void GLWidget::pause() {
     if (timerId == 0) {
-        // dans ce cas le timer ne tourne pas alors on le lance
+        // timer stopped: restart it
         timerId = startTimer(20);
         chronometre.restart();
     } else {
-        // le timer tourne alors on l'arrête
+        // timer running: stop it
         killTimer(timerId);
         timerId = 0;
     }

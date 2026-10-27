@@ -1,7 +1,7 @@
 #pragma once
 #include <random>
 
-// Le code est celui qu'on nous demande de recopier dans les exercices P9 et P11
+// Random number generator, provided by the course (exercises P9 and P11).
 class GenerateurAleatoire {
 public:
     GenerateurAleatoire(unsigned int graine = std::random_device()()) : generateur(graine) {}

@@ -1,5 +1,5 @@
 #include "vue_opengl.h"
-#include "vertex_shader.h" // Identifiants Qt de nos différents attributs
+#include "vertex_shader.h" // ids of the shader attributes
 #include "Particule.h"
 #include "Systeme.h"
 #include "Enceinte.h"
@@ -7,21 +7,20 @@
 // ======================================================================
 void VueOpenGL::dessine(Neon const& a_dessiner) {
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // repasse en mode "plein"
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // filled polygons
 
     QMatrix4x4 matrice;
-    dessineAxes(matrice);
 
     matrice.setToIdentity();
     matrice.translate(a_dessiner.get_position().get_coord(0),
                       a_dessiner.get_position().get_coord(1),
                       a_dessiner.get_position().get_coord(2));
     matrice.scale(0.5);
-    dessineSphere(matrice, 1.0, 0.0, 0.0); // rouge
+    dessineSphere(matrice, 1.0, 0.0, 0.0); // red
 }
 void VueOpenGL::dessine(Argon const& a_dessiner) {
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // repasse en mode "plein"
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // filled polygons
 
     QMatrix4x4 matrice;
 
@@ -30,11 +29,11 @@ void VueOpenGL::dessine(Argon const& a_dessiner) {
                       a_dessiner.get_position().get_coord(1),
                       a_dessiner.get_position().get_coord(2));
     matrice.scale(0.5);
-    dessineSphere(matrice, 0.0, 1.0, 0.0); // vert
+    dessineSphere(matrice, 0.0, 1.0, 0.0); // green
 }
 void VueOpenGL::dessine(Helium const& a_dessiner) {
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // repasse en mode "plein"
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // filled polygons
 
     QMatrix4x4 matrice;
 
@@ -43,17 +42,17 @@ void VueOpenGL::dessine(Helium const& a_dessiner) {
                       a_dessiner.get_position().get_coord(1),
                       a_dessiner.get_position().get_coord(2));
     matrice.scale(0.5);
-    dessineSphere(matrice, 0.0, 0.0, 1.0); // bleu
+    dessineSphere(matrice, 0.0, 0.0, 1.0); // blue
 }
 
 void VueOpenGL::dessine(Traine const& a_dessiner) {
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // repasse en mode "plein"
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // filled polygons
 
     QMatrix4x4 matrice;
     QMatrix4x4 matricetraine;
 
-    // Déssine la particule
+    // The particle
     matrice.setToIdentity();
     matrice.translate(a_dessiner.get_position().get_coord(0),
                       a_dessiner.get_position().get_coord(1),
@@ -61,7 +60,7 @@ void VueOpenGL::dessine(Traine const& a_dessiner) {
     matrice.scale(0.5);
     dessineSphere(matrice, 0.0, 0.5, 0.5);
 
-    // Déssine sa trainée
+    // Its trail
     matricetraine.setToIdentity();
     dessineTraine(matricetraine, a_dessiner);
 }
@@ -79,61 +78,40 @@ void VueOpenGL::dessine(Enceinte const& a_dessiner) {
 
 // ======================================================================
 void VueOpenGL::init() {
-    /* Initialise notre vue OpenGL.
-     * Dans cet exemple, nous créons et activons notre shader.
-     *
-     * En raison du contenu des fichiers *.glsl, le shader de cet exemple
-     * NE permet QUE de dessiner des primitives colorées
-     * (pas de textures, brouillard, reflets de la lumière ou autres).
-     *
-     * Il est séparé en deux parties VERTEX et FRAGMENT.
-     * Le VERTEX :
-     * - récupère pour chaque sommet des primitives de couleur (dans
-     *     l'attribut couleur) et de position (dans l'attribut sommet)
-     * - multiplie l'attribut sommet par les matrices 'vue_modele' et
-     *     'projection' et donne le résultat à OpenGL
-     *   - passe la couleur au shader FRAGMENT.
-     *
-     * Le FRAGMENT :
-     *   - applique la couleur qu'on lui donne
+    /* Creates and activates the shader. It only draws coloured primitives
+     * (no textures or lighting):
+     * - the vertex shader multiplies each vertex ('sommet') by the
+     *   'vue_modele' and 'projection' matrices and passes on its colour;
+     * - the fragment shader applies that colour.
      */
 
     prog.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_shader.glsl");
     prog.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fragment_shader.glsl");
 
-    /* Identifie les deux attributs du shader de cet exemple
-     * (voir vertex_shader.glsl).
-     *
-     * L'attribut identifié par 0 est particulier, il permet d'envoyer un
-     * nouveau "point" à OpenGL
-     *
-     * C'est pourquoi il devra obligatoirement être spécifié et en dernier
-     * (après la couleur dans cet exemple, voir plus bas).
+    /* The two attributes of the shader (see vertex_shader.glsl).
+     * Attribute 0 sends a new vertex to OpenGL, so it must be set last
+     * (after the colour).
      */
 
     prog.bindAttributeLocation("sommet", SommetId);
     prog.bindAttributeLocation("couleur", CouleurId);
 
-    // Activation du shader
+    // Activate the shader
     prog.bind();
 
-    /* Activation du "Test de profondeur" et du "Back-face culling"
-     * Le Test de profondeur permet de dessiner un objet à l'arrière-plan
-     * partielement caché par d'autres objets.
-     *
-     * Le Back-face culling consiste à ne dessiner que les face avec ordre
-     * de déclaration dans le sens trigonométrique.
+    /* Depth test: objects in the background are partly hidden by those in
+     * front. Back-face culling: only faces declared counter-clockwise are drawn.
      */
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    sphere.initialize(); // initialise la sphère
+    sphere.initialize();
     initializePosition();
 }
 
 // ======================================================================
 void VueOpenGL::initializePosition() {
-    // position initiale
+    // Initial camera position
     matrice_vue.setToIdentity();
     matrice_vue.translate(0.0, 0.0, -4.0);
     matrice_vue.rotate(60.0, 0.0, 1.0, 0.0);
@@ -142,9 +120,8 @@ void VueOpenGL::initializePosition() {
 
 // ======================================================================
 void VueOpenGL::translate(double x, double y, double z) {
-    /* Multiplie la matrice de vue par LA GAUCHE.
-     * Cela fait en sorte que la dernière modification apportée
-     * à la matrice soit appliquée en dernier (composition de fonctions).
+    /* Multiplies the view matrix on the LEFT, so that the latest change is
+     * applied last (composition of functions).
      */
     QMatrix4x4 translation_supplementaire;
     translation_supplementaire.translate(x, y, z);
@@ -153,7 +130,7 @@ void VueOpenGL::translate(double x, double y, double z) {
 
 // ======================================================================
 void VueOpenGL::rotate(double angle, double dir_x, double dir_y, double dir_z) {
-    // Multiplie la matrice de vue par LA GAUCHE
+    // Multiplies the view matrix on the left
     QMatrix4x4 rotation_supplementaire;
     rotation_supplementaire.rotate(angle, dir_x, dir_y, dir_z);
     matrice_vue = rotation_supplementaire * matrice_vue;
@@ -167,7 +144,7 @@ void VueOpenGL::dessineCube(QMatrix4x4 const& point_de_vue, double col1, double 
 
     prog.setAttributeValue(CouleurId, col1, col2, col3);
 
-    // face coté X = +1
+    // face X = +1
     prog.setAttributeValue(SommetId, +1.0, -1.0, -1.0);
     prog.setAttributeValue(SommetId, +1.0, +1.0, -1.0);
 
@@ -180,7 +157,7 @@ void VueOpenGL::dessineCube(QMatrix4x4 const& point_de_vue, double col1, double 
     prog.setAttributeValue(SommetId, +1.0, -1.0, +1.0);
     prog.setAttributeValue(SommetId, +1.0, -1.0, -1.0);
 
-    // face coté X = -1
+    // face X = -1
     prog.setAttributeValue(SommetId, -1.0, -1.0, -1.0);
     prog.setAttributeValue(SommetId, -1.0, -1.0, +1.0);
 
@@ -193,7 +170,7 @@ void VueOpenGL::dessineCube(QMatrix4x4 const& point_de_vue, double col1, double 
     prog.setAttributeValue(SommetId, -1.0, +1.0, -1.0);
     prog.setAttributeValue(SommetId, -1.0, -1.0, -1.0);
 
-    // connecter les faces
+    // edges joining the two faces
     prog.setAttributeValue(SommetId, -1.0, -1.0, -1.0);
     prog.setAttributeValue(SommetId, +1.0, -1.0, -1.0);
 
@@ -212,8 +189,8 @@ void VueOpenGL::dessineCube(QMatrix4x4 const& point_de_vue, double col1, double 
 void VueOpenGL::dessineSphere(QMatrix4x4 const& point_de_vue, double rouge, double vert,
                               double bleu) {
     prog.setUniformValue("vue_modele", matrice_vue * point_de_vue);
-    prog.setAttributeValue(CouleurId, rouge, vert, bleu); // met la couleur
-    sphere.draw(prog, SommetId);                          // dessine la sphère
+    prog.setAttributeValue(CouleurId, rouge, vert, bleu); // colour
+    sphere.draw(prog, SommetId);                          // draw the sphere
 }
 
 void VueOpenGL::dessineAxes(QMatrix4x4 const& point_de_vue, bool en_couleur) {
@@ -221,24 +198,24 @@ void VueOpenGL::dessineAxes(QMatrix4x4 const& point_de_vue, bool en_couleur) {
 
     glBegin(GL_LINES);
 
-    // axe X
+    // X axis
     if (en_couleur) {
-        prog.setAttributeValue(CouleurId, 1.0, 0.0, 0.0); // rouge
+        prog.setAttributeValue(CouleurId, 1.0, 0.0, 0.0); // red
     } else {
-        prog.setAttributeValue(CouleurId, 1.0, 1.0, 1.0); // blanc
+        prog.setAttributeValue(CouleurId, 1.0, 1.0, 1.0); // white
     }
     prog.setAttributeValue(SommetId, 0.0, 0.0, 0.0);
     prog.setAttributeValue(SommetId, 1.0, 0.0, 0.0);
 
-    // axe Y
+    // Y axis
     if (en_couleur)
-        prog.setAttributeValue(CouleurId, 0.0, 1.0, 0.0); // vert
+        prog.setAttributeValue(CouleurId, 0.0, 1.0, 0.0); // green
     prog.setAttributeValue(SommetId, 0.0, 0.0, 0.0);
     prog.setAttributeValue(SommetId, 0.0, 1.0, 0.0);
 
-    // axe Z
+    // Z axis
     if (en_couleur)
-        prog.setAttributeValue(CouleurId, 0.0, 0.0, 1.0); // bleu
+        prog.setAttributeValue(CouleurId, 0.0, 0.0, 1.0); // blue
     prog.setAttributeValue(SommetId, 0.0, 0.0, 0.0);
     prog.setAttributeValue(SommetId, 0.0, 0.0, 1.0);
 

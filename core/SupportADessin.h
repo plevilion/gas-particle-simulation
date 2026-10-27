@@ -7,6 +7,8 @@ class Traine;
 class Enceinte;
 class Systeme;
 
+// Something particles can be drawn on: the terminal (TextViewer) or the 3D
+// OpenGL view (VueOpenGL). One dessine() overload per drawable type.
 class SupportADessin {
 public:
     virtual ~SupportADessin() = default;

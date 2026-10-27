@@ -1,44 +1,41 @@
 #pragma once
 
-#include <QOpenGLWidget> // Classe pour faire une fenêtre OpenGL
-#include <QElapsedTimer> // Classe pour gérer le temps
+#include <QOpenGLWidget>
+#include <QElapsedTimer>
 #include "vue_opengl.h"
 #include "Particule.h"
 #include "Systeme.h"
 
-class GLWidget : public QOpenGLWidget
-/* La fenêtre hérite de QOpenGLWidget ;
- * les événements (clavier, souris, temps) sont des méthodes virtuelles à redéfinir.
- */
-{
+// The window. Keyboard and timer events are handled by overriding the virtual
+// methods of QOpenGLWidget.
+class GLWidget : public QOpenGLWidget {
 public:
-    // Nous avons 2 constructeur pour GLWidget destiné à plusieurs usages
+    // Three given particles (plus a tracer) in a 20 x 20 x 20 box
     GLWidget(Neon* neon, Argon* arg, Helium* hel, Traine* traine, QWidget* parent = nullptr);
+    // n atoms of each gas plus a tracer, at random positions
     GLWidget(int n, int largeur = 100, int hauteur = 100, int profondeur = 100,
              QWidget* parent = nullptr);
     virtual ~GLWidget() = default;
 
 private:
-    // Les 3 méthodes clés de la classe QOpenGLWidget à réimplémenter
+    // The three key methods of QOpenGLWidget
     virtual void initializeGL() override;
     virtual void resizeGL(int width, int height) override;
     virtual void paintGL() override;
 
-    // Méthodes de gestion d'évènements
+    // Events
     virtual void keyPressEvent(QKeyEvent* event) override;
     virtual void timerEvent(QTimerEvent* event) override;
 
-    // Méthodes de gestion interne
     void pause();
 
-    // Vue : ce qu'il faut donner au contenu pour qu'il puisse se dessiner sur la vue
+    // What the system draws itself on
     VueOpenGL vue;
 
-    // Timer
     int timerId;
-    // pour faire évoluer les objets avec le bon "dt"
+    // Measures the real time between two steps (dt)
     QElapsedTimer chronometre;
 
-    // objets à dessiner, faire évoluer
+    // The simulated gas
     Systeme c;
 };
