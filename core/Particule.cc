@@ -1,6 +1,6 @@
 #include <iostream>
 #include <array>
-#include "particule.h"
+#include "Particule.h"
 #include "Vecteur3D.h"
 #include "SupportADessin.h"
 #include "Dessinable.h"

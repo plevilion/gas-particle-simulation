@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include "SupportADessin.h"
-#include "particule.h"
+#include "Particule.h"
 #include "Enceinte.h"
 #include "Systeme.h"
 

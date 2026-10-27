@@ -2,7 +2,7 @@
 #include "Dessinable.h"
 #include "SupportADessin.h"
 #include <array>
-#include "particule.h"
+#include "Particule.h"
 
 class Enceinte : public Dessinable {
 	

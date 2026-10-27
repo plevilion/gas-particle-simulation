@@ -1,6 +1,6 @@
 #include "vue_opengl.h"
 #include "vertex_shader.h" // Identifiants Qt de nos différents attributs
-#include "particule.h"
+#include "Particule.h"
 #include "Systeme.h"
 #include "Enceinte.h"
 

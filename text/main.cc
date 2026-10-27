@@ -1,11 +1,11 @@
 #include <iostream>
 #include <array>
 #include <vector>
-#include "particule.h"
-#include "Textviewer.h"
+#include "Particule.h"
+#include "TextViewer.h"
 #include "Vecteur3D.h"
 #include "Enceinte.h"
-#include "systeme.h"
+#include "Systeme.h"
 #include "GenerateurAleatoire.h"
 
 

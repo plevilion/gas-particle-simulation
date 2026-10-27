@@ -3,7 +3,7 @@
 #include <QOpenGLWidget>        // Classe pour faire une fenêtre OpenGL
 #include <QElapsedTimer>        // Classe pour gérer le temps
 #include "vue_opengl.h"
-#include "particule.h"
+#include "Particule.h"
 #include "Systeme.h"
 
 class GLWidget : public QOpenGLWidget

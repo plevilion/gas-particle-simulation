@@ -1,5 +1,5 @@
 #pragma once
-#include "particule.h"
+#include "Particule.h"
 #include "Enceinte.h"
 #include <vector>
 #include "GenerateurAleatoire.h"

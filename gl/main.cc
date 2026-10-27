@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <vector>
 #include "glwidget.h"
-#include "particule.h"
+#include "Particule.h"
 #include "Systeme.h"
 #include "Vecteur3D.h"
 

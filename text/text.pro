@@ -1,28 +1,26 @@
-QMAKE_CXXFLAGS += -std=c++17
+# Terminal version of the simulation. It does not use Qt.
 
-CONFIG += console
+TEMPLATE = app
+TARGET = gas_text
+CONFIG += console c++17
+CONFIG -= qt app_bundle
 
-TARGET = ex_05_text
-
-LIBS += -L../general -lgeneral
-PRE_TARGETDEPS += ../general/libgeneral.a
-
-INCLUDEPATH = ../general
+INCLUDEPATH += ../core
 
 SOURCES += \
-    main_text.cc \
-    Textviewer.cc \
-    ../general/Vecteur3D.cc \
-    ../general/particule.cc \
-    ../general/systeme.cc \
-    ../general/Enceinte.cc 
-    
+    main.cc \
+    TextViewer.cc \
+    ../core/Vecteur3D.cc \
+    ../core/Particule.cc \
+    ../core/Enceinte.cc \
+    ../core/Systeme.cc
+
 HEADERS += \
-    ../general/Systeme.h \
-    Textviewer.h \
-    ../general/Dessinable.h \
-    ../general/SupportADessin.h \
-	../general/Vecteur3D.h \
-    ../general/particule.h \
-    ../general/Enceinte.h  \
-    ../general/GenerateurAleatoire.h
+    TextViewer.h \
+    ../core/Vecteur3D.h \
+    ../core/Particule.h \
+    ../core/Enceinte.h \
+    ../core/Systeme.h \
+    ../core/Dessinable.h \
+    ../core/SupportADessin.h \
+    ../core/GenerateurAleatoire.h

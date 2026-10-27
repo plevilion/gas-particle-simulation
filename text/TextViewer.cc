@@ -1,8 +1,8 @@
 #include <iostream>
 #include <array>
 #include "SupportADessin.h"
-#include "Textviewer.h"
-#include "particule.h"
+#include "TextViewer.h"
+#include "Particule.h"
 #include "Enceinte.h"
 #include "Systeme.h"
 

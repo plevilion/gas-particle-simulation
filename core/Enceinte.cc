@@ -2,7 +2,7 @@
 #include "Enceinte.h"
 #include "Dessinable.h"
 #include "SupportADessin.h"
-#include "particule.h"
+#include "Particule.h"
 #include <algorithm>
 #include <array>
 using namespace std;

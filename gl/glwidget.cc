@@ -2,7 +2,7 @@
 #include <QTimerEvent>
 #include <QMatrix4x4>
 #include "glwidget.h"
-#include "particule.h"
+#include "Particule.h"
 #include "Systeme.h"
 
 

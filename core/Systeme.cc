@@ -3,7 +3,7 @@
 #include <vector>
 #include "Vecteur3D.h"
 #include "Systeme.h"
-#include "particule.h"
+#include "Particule.h"
 #include "Enceinte.h"
 #include "Dessinable.h"
 #include "SupportADessin.h"

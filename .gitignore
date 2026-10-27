@@ -1,0 +1,16 @@
+# Build output
+*.o
+Makefile
+.qmake.stash
+moc_*
+qrc_*.cpp
+*.app/
+text/gas_text
+gl/gas_gl
+gas_text
+build/
+
+# Editors and OS
+.DS_Store
+.vscode/
+*.user
