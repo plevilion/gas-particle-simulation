@@ -10,11 +10,15 @@ The 3D version shows 999 atoms, 333 of each gas, in a 100 × 100 × 100 box, plu
 
 **Each time step** $\Delta t$:
 
-1. **Free flight.** Every atom moves in a straight line: $\mathbf x \leftarrow \mathbf x + \mathbf v\,\Delta t$.
+1. **Free flight.** Every atom moves in a straight line: $\mathbf x \leftarrow \mathbf x + \mathbf v \Delta t$.
 2. **Walls.** An atom that crossed a wall is reflected back inside, and the matching velocity component changes sign.
 3. **Collisions.** Atoms that share a unit cell of the box collide. Let $\mathbf v_g$ be the velocity of their centre of mass. In that frame, atom 2's velocity keeps its norm but takes a uniformly random direction $\mathbf v_0$, and atom 1's velocity follows from momentum conservation:
 
-$$\mathbf v_g = \frac{m_1\mathbf v_1 + m_2\mathbf v_2}{m_1 + m_2}, \qquad \mathbf v_2' = \mathbf v_g + \mathbf v_0, \qquad \mathbf v_1' = \mathbf v_g - \frac{m_2}{m_1}\,\mathbf v_0, \qquad \lVert \mathbf v_0 \rVert = \lVert \mathbf v_2 - \mathbf v_g \rVert.$$
+$$\mathbf v_g = \frac{m_1 \mathbf v_1 + m_2 \mathbf v_2}{m_1 + m_2}$$
+
+$$\mathbf v_2' = \mathbf v_g + \mathbf v_0, \qquad \mathbf v_1' = \mathbf v_g - \frac{m_2}{m_1} \mathbf v_0$$
+
+where $\mathbf v_0$ has the same norm as $\mathbf v_2 - \mathbf v_g$.
 
 Each collision conserves momentum and kinetic energy.
 
