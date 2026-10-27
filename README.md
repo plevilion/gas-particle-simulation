@@ -112,6 +112,6 @@ The first commit is the version we submitted in June 2024. The later commits reo
 
 ## Credits
 
-Written by Paul Vidal and Pierre Levilion for CS-112 *Programmation orientée objet* (Prof. Jean-Cédric Chappelier), EPFL, spring 2024, and shared with the agreement of the course instructor.
+Written by Paul Vidal and Pierre Levilion for CS-112 *Programmation orientée objet* (Prof. Jean-Cédric Chappelier), EPFL, spring 2024.
 
 The course provided the OpenGL scaffolding (the window and camera code in `GLWidget` and `VueOpenGL`, `GLSphere` and the shaders) and the random number generator (`GenerateurAleatoire`). The overall structure and the physical model follow the course's weekly instructions. We wrote the particle and system classes, the collision methods, the trail and the drawing of the simulation.
