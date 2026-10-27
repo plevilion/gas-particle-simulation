@@ -44,7 +44,9 @@ void GLWidget::resizeGL(int width, int height) {
     // Perspective projection, sent to the shader by VueOpenGL
     // (see http://www.songho.ca/opengl/gl_projectionmatrix.html)
     QMatrix4x4 matrice;
-    matrice.perspective(70.0, qreal(width) / qreal(height ? height : 1.0), 1e-3, 1e5);
+    // Near and far planes at 0.1 and 10^4: a closer near plane loses depth precision
+    // and makes distant spheres overlap wrongly.
+    matrice.perspective(70.0, qreal(width) / qreal(height ? height : 1.0), 0.1, 1e4);
     vue.setProjection(matrice);
 }
 
@@ -57,7 +59,7 @@ void GLWidget::paintGL() {
 // ======================================================================
 void GLWidget::keyPressEvent(QKeyEvent* event) {
     constexpr double petit_angle(5.0); // degrees
-    constexpr double petit_pas(1.0);
+    constexpr double petit_pas(5.0);   // camera step, for a 100-unit box
 
     switch (event->key()) {
 

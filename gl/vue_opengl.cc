@@ -110,12 +110,14 @@ void VueOpenGL::init() {
 }
 
 // ======================================================================
-void VueOpenGL::initializePosition() {
-    // Initial camera position
+void VueOpenGL::initializePosition(double taille_boite) {
+    // Camera at 2 box sizes from the centre of the box, looking at it
+    // from the same angle as the course's original view.
     matrice_vue.setToIdentity();
-    matrice_vue.translate(0.0, 0.0, -4.0);
+    matrice_vue.translate(0.0, 0.0, -2.0 * taille_boite);
     matrice_vue.rotate(60.0, 0.0, 1.0, 0.0);
     matrice_vue.rotate(45.0, 0.0, 0.0, 1.0);
+    matrice_vue.translate(-taille_boite / 2, -taille_boite / 2, -taille_boite / 2);
 }
 
 // ======================================================================

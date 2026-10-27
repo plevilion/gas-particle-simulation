@@ -19,7 +19,8 @@ public:
 
     // (Re)initialisation
     void init();
-    void initializePosition();
+    // Puts the camera so that a cubic box of the given size is fully visible
+    void initializePosition(double taille_boite = 100.0);
 
     void setProjection(QMatrix4x4 const& projection) {
         prog.setUniformValue("projection", projection);
